@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 from graph.chains.retreival_grader import GradeDocuments,retrieval_grader
 from ingestion import retriever
-
+from graph.chains.generation import gen_chain
 def test_retrival_answer_yes()->None:
     question = "agent memory"
     docs = retriever.invoke(question)
@@ -24,3 +24,9 @@ def test_retrival_grader_no():
         {"question":"how to make pizza","document":doc_txt}
     )#type:ignore 
     assert res.binary_score == "no"
+
+def test_generation_chain():
+    question = "agent-memory "
+    docs = retriever.invoke(question)
+    generation = gen_chain.invoke({"context":docs,"question":question})
+    print(generation)
